@@ -137,20 +137,25 @@ function createIco(pngBuffers) {
 const assetsDir = path.join(__dirname, 'assets');
 if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
-const png32 = createPng(32, 32, getIconPixel);
 const png16 = createPng(16, 16, getIconPixel);
+const png32 = createPng(32, 32, getIconPixel);
 const png48 = createPng(48, 48, getIconPixel);
 const png64 = createPng(64, 64, getIconPixel);
+const png128 = createPng(128, 128, getIconPixel);
+const png256 = createPng(256, 256, getIconPixel);
 
 fs.writeFileSync(path.join(assetsDir, 'tray-icon.png'), png32);
 fs.writeFileSync(path.join(assetsDir, 'tray-icon-16.png'), png16);
-fs.writeFileSync(path.join(assetsDir, 'icon.png'), png64);
+fs.writeFileSync(path.join(assetsDir, 'icon.png'), png256);
 
 const icoBuf = createIco([
   { width: 16, height: 16, buf: png16 },
   { width: 32, height: 32, buf: png32 },
   { width: 48, height: 48, buf: png48 },
+  { width: 64, height: 64, buf: png64 },
+  { width: 128, height: 128, buf: png128 },
+  { width: 256, height: 256, buf: png256 },
 ]);
 fs.writeFileSync(path.join(assetsDir, 'icon.ico'), icoBuf);
 
-console.log('Generated tray-icon.png, icon.png, icon.ico in assets/');
+console.log('Generated tray-icon.png, icon.png (256x256), icon.ico (up to 256x256) in assets/');

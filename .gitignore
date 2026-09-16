@@ -8,6 +8,7 @@ pnpm-debug.log*
 # Builds
 dist/
 dist-electron/
+release/
 
 # Environment and OS
 .DS_Store

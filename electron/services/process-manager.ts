@@ -54,7 +54,9 @@ export class ProcessManager {
   private scriptPath: string;
 
   constructor() {
-    this.scriptPath = path.join(__dirname, 'native-scripts', 'get-cwd.ps1');
+    const defaultPath = path.join(__dirname, 'native-scripts', 'get-cwd.ps1');
+    const unpackedPath = defaultPath.replace('app.asar', 'app.asar.unpacked');
+    this.scriptPath = fs.existsSync(unpackedPath) ? unpackedPath : defaultPath;
   }
 
   /**
