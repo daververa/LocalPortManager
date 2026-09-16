@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { StorageService } from './services/storage';
 import { PortScanner } from './services/port-scanner';
-import { ProcessManager } from './services/process-manager';
+import { ProcessManager, ProcessDetails } from './services/process-manager';
 import { ProjectDetector } from './services/project-detector';
 import { ProcessController } from './services/process-controller';
 import { TrayService } from './services/tray';
@@ -21,6 +21,7 @@ class LocalPortApplication {
   private trayService = new TrayService();
 
   private cachedPorts: PortItem[] = [];
+  private processCache = new Map<number, ProcessDetails>();
   private previousActivePortKeys = new Set<string>();
   private pollTimer: NodeJS.Timeout | null = null;
   private isScanning = false;
@@ -155,15 +156,30 @@ class LocalPortApplication {
 
     try {
       const rawListeners = await this.portScanner.scan();
-      const pids = rawListeners.map(l => l.pid);
-      const procsMap = await this.processManager.getProcessesInfo(pids);
-      const favorites = new Set(this.storage.getFavorites());
+      const currentPids = new Set(rawListeners.map(l => l.pid).filter(p => p > 0));
 
+      // 1. Evict terminated processes from cache
+      for (const cachedPid of this.processCache.keys()) {
+        if (!currentPids.has(cachedPid)) {
+          this.processCache.delete(cachedPid);
+        }
+      }
+
+      // 2. Query only new PIDs not in cache (drastically saves CPU)
+      const newPids = Array.from(currentPids).filter(p => !this.processCache.has(p));
+      if (newPids.length > 0) {
+        const newProcsMap = await this.processManager.getProcessesInfo(newPids);
+        for (const [pid, details] of newProcsMap.entries()) {
+          this.processCache.set(pid, details);
+        }
+      }
+
+      const favorites = new Set(this.storage.getFavorites());
       const items: PortItem[] = [];
       const currentKeys = new Set<string>();
 
       for (const listener of rawListeners) {
-        const proc = procsMap.get(listener.pid);
+        const proc = this.processCache.get(listener.pid);
         const pName = proc ? proc.name : 'Unknown';
         const cmd = proc ? proc.commandLine : undefined;
         const cwd = proc ? proc.workingDirectory : undefined;

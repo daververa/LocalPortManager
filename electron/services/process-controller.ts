@@ -15,7 +15,16 @@ export class ProcessController {
   }
 
   async openUrl(url: string): Promise<void> {
-    await shell.openExternal(url);
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        console.warn('[ProcessController] Intento de abrir protocolo no permitido bloqueado:', url);
+        return;
+      }
+      await shell.openExternal(url);
+    } catch (e) {
+      console.error('[ProcessController] URL inválida:', url, e);
+    }
   }
 
   copyUrl(url: string): void {
@@ -40,29 +49,58 @@ export class ProcessController {
   async openTerminal(folderPath: string): Promise<{ success: boolean; error?: string }> {
     try {
       const targetDir = folderPath && fs.existsSync(folderPath) ? folderPath : process.env.USERPROFILE || 'C:\\';
-      
-      // Try Windows Terminal (wt.exe) first
-      try {
-        const child = spawn('wt.exe', ['-d', targetDir], { detached: true, stdio: 'ignore' });
-        child.unref();
-        return { success: true };
-      } catch {
-        // Fallback to PowerShell
-        const child = spawn('powershell.exe', ['-NoExit', '-Command', `Set-Location '${targetDir}'`], {
-          detached: true,
-          stdio: 'ignore',
-        });
-        child.unref();
-        return { success: true };
-      }
+
+      return new Promise((resolve) => {
+        let resolved = false;
+        const safeResolve = (res: { success: boolean; error?: string }) => {
+          if (!resolved) {
+            resolved = true;
+            resolve(res);
+          }
+        };
+
+        // Try Windows Terminal (wt.exe) first
+        try {
+          const child = spawn('wt.exe', ['-d', targetDir], { detached: true, stdio: 'ignore' });
+
+          child.on('error', () => {
+            // Fallback cleanly to PowerShell with safe LiteralPath
+            this.spawnPowerShellTerminal(targetDir, safeResolve);
+          });
+
+          child.unref();
+          setTimeout(() => safeResolve({ success: true }), 350);
+        } catch {
+          this.spawnPowerShellTerminal(targetDir, safeResolve);
+        }
+      });
     } catch (e: any) {
       return { success: false, error: e.message };
     }
   }
 
+  private spawnPowerShellTerminal(targetDir: string, callback: (res: { success: boolean; error?: string }) => void) {
+    try {
+      const escaped = targetDir.replace(/'/g, "''");
+      const child = spawn('powershell.exe', ['-NoExit', '-Command', `Set-Location -LiteralPath '${escaped}'`], {
+        detached: true,
+        stdio: 'ignore',
+      });
+      child.on('error', (err) => callback({ success: false, error: err.message }));
+      child.unref();
+      callback({ success: true });
+    } catch (e: any) {
+      callback({ success: false, error: e.message });
+    }
+  }
+
+  private isValidPid(pid: any): boolean {
+    return typeof pid === 'number' && Number.isInteger(pid) && pid > 4;
+  }
+
   async pause(pid: number): Promise<{ success: boolean; error?: string }> {
-    if (pid <= 4) {
-      return { success: false, error: 'No se permite suspender procesos críticos del sistema.' };
+    if (!this.isValidPid(pid)) {
+      return { success: false, error: 'No se permite suspender procesos críticos del sistema o con PID inválido.' };
     }
 
     try {
@@ -81,8 +119,8 @@ export class ProcessController {
   }
 
   async resume(pid: number): Promise<{ success: boolean; error?: string }> {
-    if (pid <= 4) {
-      return { success: false, error: 'Operación no válida en proceso del sistema.' };
+    if (!this.isValidPid(pid)) {
+      return { success: false, error: 'Operación no válida en proceso del sistema o con PID inválido.' };
     }
 
     try {
@@ -101,8 +139,8 @@ export class ProcessController {
   }
 
   async stop(pid: number, force: boolean = false): Promise<{ success: boolean; error?: string }> {
-    if (pid <= 4) {
-      return { success: false, error: 'Seguridad: Prohibido finalizar procesos del núcleo de Windows.' };
+    if (!this.isValidPid(pid)) {
+      return { success: false, error: 'Seguridad: Prohibido finalizar procesos del núcleo de Windows o con PID inválido.' };
     }
 
     try {

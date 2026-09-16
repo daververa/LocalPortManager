@@ -59,10 +59,17 @@ export class StorageService {
   }
 
   private saveData(): void {
+    const tempPath = `${this.filePath}.tmp`;
     try {
-      fs.writeFileSync(this.filePath, JSON.stringify(this.data, null, 2), 'utf-8');
+      fs.writeFileSync(tempPath, JSON.stringify(this.data, null, 2), 'utf-8');
+      fs.renameSync(tempPath, this.filePath);
     } catch (e) {
-      console.error('[Storage] Failed to save config file:', e);
+      console.error('[Storage] Atomic write failed, attempting direct write fallback:', e);
+      try {
+        fs.writeFileSync(this.filePath, JSON.stringify(this.data, null, 2), 'utf-8');
+      } catch (err) {
+        console.error('[Storage] Failed to save config file:', err);
+      }
     }
   }
 
