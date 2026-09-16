@@ -38,12 +38,12 @@ export const HistoryView: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-6 select-none animate-fade-in">
+    <div className="flex-1 overflow-y-auto p-6 space-y-6 select-none animate-fade-in text-theme-secondary">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-base font-semibold text-white">Historial de Actividad</h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h2 className="text-base font-semibold text-theme-text">Historial de Actividad</h2>
+          <p className="text-xs text-theme-muted mt-0.5">
             Registro cronológico de servidores iniciados, puertos detectados y cambios de estado.
           </p>
         </div>
@@ -51,9 +51,9 @@ export const HistoryView: React.FC = () => {
         {history.length > 0 && (
           <button
             onClick={handleClear}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white text-xs font-medium border border-white/10 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-theme-button hover:bg-theme-button-hover text-theme-secondary hover:text-theme-text text-xs font-medium border border-theme-border transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5 text-zinc-400" />
+            <Trash2 className="w-3.5 h-3.5 text-theme-muted" />
             <span>Limpiar Historial</span>
           </button>
         )}
@@ -61,10 +61,10 @@ export const HistoryView: React.FC = () => {
 
       {/* Timeline */}
       {history.length === 0 ? (
-        <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-12 text-center">
-          <Clock className="w-10 h-10 text-zinc-500 mx-auto mb-3" />
-          <h3 className="text-sm font-semibold text-zinc-200">Sin eventos registrados</h3>
-          <p className="text-xs text-zinc-400 max-w-sm mx-auto mt-1">
+        <div className="bg-theme-card border border-theme-border rounded-2xl p-12 text-center">
+          <Clock className="w-10 h-10 text-theme-muted mx-auto mb-3" />
+          <h3 className="text-sm font-semibold text-theme-text">Sin eventos registrados</h3>
+          <p className="text-xs text-theme-muted max-w-sm mx-auto mt-1">
             Los eventos de inicio, pausa y detección de puertos se guardarán aquí automáticamente.
           </p>
         </div>
@@ -79,16 +79,16 @@ export const HistoryView: React.FC = () => {
             return (
               <div
                 key={item.id}
-                className="bg-[#18181C]/70 border border-white/[0.06] rounded-xl p-3 flex items-start gap-3 text-xs"
+                className="bg-theme-card border border-theme-border rounded-xl p-3 flex items-start gap-3 text-xs shadow-sm"
               >
                 <div className="mt-0.5">{getEventIcon(item.type)}</div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-zinc-200">{item.title}</span>
-                    <span className="font-mono text-[11px] text-zinc-500">{timeStr}</span>
+                    <span className="font-semibold text-theme-text">{item.title}</span>
+                    <span className="font-mono text-[11px] text-theme-muted">{timeStr}</span>
                   </div>
                   {item.details && (
-                    <p className="text-zinc-400 text-[11px] mt-0.5">{item.details}</p>
+                    <p className="text-theme-muted text-[11px] mt-0.5">{item.details}</p>
                   )}
                 </div>
               </div>

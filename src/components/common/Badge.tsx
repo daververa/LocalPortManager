@@ -68,7 +68,7 @@ export const Badge: React.FC<BadgeProps> = ({ status, safety, text, size = 'sm' 
         );
       case 'system':
         return (
-          <span className={`inline-flex items-center gap-1 font-medium rounded-full bg-zinc-600/20 text-zinc-400 border border-zinc-500/20 ${sizeClasses}`}>
+          <span className={`inline-flex items-center gap-1 font-medium rounded-full bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20 ${sizeClasses}`}>
             <span>Sistema</span>
           </span>
         );
@@ -76,7 +76,7 @@ export const Badge: React.FC<BadgeProps> = ({ status, safety, text, size = 'sm' 
   }
 
   return (
-    <span className={`inline-flex items-center font-medium rounded-full bg-white/5 text-zinc-300 border border-white/10 ${sizeClasses}`}>
+    <span className={`inline-flex items-center font-medium rounded-full bg-theme-pill text-theme-secondary border border-theme-border ${sizeClasses}`}>
       {text}
     </span>
   );

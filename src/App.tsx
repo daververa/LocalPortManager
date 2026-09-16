@@ -11,9 +11,12 @@ import { SettingsView } from './components/settings/SettingsView';
 import { ConfirmModal } from './components/common/ConfirmModal';
 import { EmptyState } from './components/common/EmptyState';
 import { usePorts } from './hooks/usePorts';
+import { useTheme } from './hooks/useTheme';
 import { PortItem } from './types/models';
 
 export const App: React.FC = () => {
+  const { theme, resolvedTheme, setTheme, toggleTheme } = useTheme();
+
   const {
     ports,
     filteredPorts,
@@ -44,7 +47,6 @@ export const App: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<ActiveNavTab>('ports');
   const [selectedPort, setSelectedPort] = useState<PortItem | null>(null);
   const [stopModalItem, setStopModalItem] = useState<PortItem | null>(null);
-  const [theme, setTheme] = useState<'system' | 'dark' | 'light'>('dark');
 
   // Load window settings
   useEffect(() => {
@@ -53,7 +55,6 @@ export const App: React.FC = () => {
         const s = await window.api.getSettings();
         setWindowMode(s.windowMode);
         setAlwaysOnTop(s.alwaysOnTop);
-        setTheme(s.theme || 'dark');
       }
     }
     loadSettings();
@@ -121,18 +122,10 @@ export const App: React.FC = () => {
     }
   };
 
-  const handleToggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark';
-    setTheme(next);
-    if (window.api) {
-      window.api.saveSettings({ theme: next });
-    }
-  };
-
   return (
-    <div className={`w-screen h-screen flex flex-col font-sans ${theme === 'dark' ? 'dark text-zinc-100' : 'light text-zinc-800'}`}>
+    <div className={`w-screen h-screen flex flex-col font-sans ${resolvedTheme === 'dark' ? 'dark' : 'light'}`}>
       {/* Outer Shell with Solid Apple Surface & Corner Radius */}
-      <div className="w-full h-full flex flex-col overflow-hidden bg-[#0F0F12] border border-white/[0.12] shadow-2xl rounded-2xl relative">
+      <div className="w-full h-full flex flex-col overflow-hidden bg-theme-bg border border-theme-border shadow-2xl rounded-2xl relative text-theme-text transition-colors duration-200">
         {/* Custom Apple Titlebar */}
         <Titlebar
           windowMode={windowMode}
@@ -174,11 +167,11 @@ export const App: React.FC = () => {
               }}
               stats={stats}
               theme={theme}
-              onToggleTheme={handleToggleTheme}
+              onToggleTheme={toggleTheme}
             />
 
             {/* Main Area */}
-            <div className="flex-1 flex flex-col overflow-hidden bg-black/20">
+            <div className="flex-1 flex flex-col overflow-hidden bg-theme-main transition-colors duration-200">
               {currentTab === 'projects' ? (
                 <ProjectsView
                   activePorts={ports}

@@ -25,7 +25,7 @@ export const Titlebar: React.FC<TitlebarProps> = ({
   onClose,
 }) => {
   return (
-    <header className="titlebar-drag h-10 w-full flex items-center justify-between px-3 bg-white/[0.03] border-b border-white/[0.06] select-none z-40 backdrop-blur-md">
+    <header className="titlebar-drag h-10 w-full flex items-center justify-between px-3 bg-theme-titlebar border-b border-theme-border select-none z-40 backdrop-blur-md transition-colors duration-200">
       {/* Left: Apple traffic light buttons */}
       <div className="titlebar-no-drag flex items-center gap-2 group">
         <button
@@ -52,11 +52,11 @@ export const Titlebar: React.FC<TitlebarProps> = ({
       </div>
 
       {/* Center: Title & Live indicator */}
-      <div className="flex items-center gap-2 text-xs font-medium text-zinc-300">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 active-pulse" />
-        <span className="font-semibold tracking-wide text-zinc-100">LocalPort</span>
-        <span className="text-zinc-500 font-normal">|</span>
-        <span className="text-[11px] text-zinc-400">
+      <div className="flex items-center gap-2 text-xs font-medium text-theme-secondary">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 active-pulse" />
+        <span className="font-semibold tracking-wide text-theme-text">LocalPort</span>
+        <span className="text-theme-muted font-normal">|</span>
+        <span className="text-[11px] text-theme-muted">
           {activeCount} {activeCount === 1 ? 'activo' : 'activos'}
         </span>
       </div>
@@ -67,9 +67,9 @@ export const Titlebar: React.FC<TitlebarProps> = ({
           onClick={onScan}
           title="Escanear puertos ahora (Ctrl+R)"
           disabled={scanning}
-          className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 active:scale-95 transition-all"
+          className="p-1.5 rounded-lg text-theme-secondary hover:text-theme-text hover:bg-theme-button active:scale-95 transition-all"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${scanning ? 'animate-spin text-emerald-400' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${scanning ? 'animate-spin text-emerald-500' : ''}`} />
         </button>
 
         <button
@@ -77,8 +77,8 @@ export const Titlebar: React.FC<TitlebarProps> = ({
           title={alwaysOnTop ? 'Desactivar Siempre Visible' : 'Mantener Siempre Visible'}
           className={`p-1.5 rounded-lg transition-all active:scale-95 ${
             alwaysOnTop
-              ? 'text-blue-400 bg-blue-500/10 border border-blue-500/20'
-              : 'text-zinc-400 hover:text-white hover:bg-white/5'
+              ? 'text-blue-500 bg-blue-500/10 border border-blue-500/20'
+              : 'text-theme-secondary hover:text-theme-text hover:bg-theme-button'
           }`}
         >
           <Pin className={`w-3.5 h-3.5 ${alwaysOnTop ? 'rotate-45' : ''}`} />
@@ -87,12 +87,12 @@ export const Titlebar: React.FC<TitlebarProps> = ({
         <button
           onClick={onToggleMode}
           title={windowMode === 'widget' ? 'Expandir a vista completa' : 'Modo Widget flotante'}
-          className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 active:scale-95 transition-all"
+          className="p-1.5 rounded-lg text-theme-secondary hover:text-theme-text hover:bg-theme-button active:scale-95 transition-all"
         >
           {windowMode === 'widget' ? (
-            <LayoutGrid className="w-3.5 h-3.5 text-zinc-300" />
+            <LayoutGrid className="w-3.5 h-3.5 text-theme-text" />
           ) : (
-            <Layers className="w-3.5 h-3.5 text-zinc-300" />
+            <Layers className="w-3.5 h-3.5 text-theme-text" />
           )}
         </button>
       </div>

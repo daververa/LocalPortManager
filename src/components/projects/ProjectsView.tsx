@@ -111,19 +111,19 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-6 select-none animate-fade-in">
+    <div className="flex-1 overflow-y-auto p-6 space-y-6 select-none animate-fade-in text-theme-secondary">
       {/* View Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-base font-semibold text-white">Proyectos Guardados</h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
+          <h2 className="text-base font-semibold text-theme-text">Proyectos Guardados</h2>
+          <p className="text-xs text-theme-muted mt-0.5">
             Inicia tus entornos de desarrollo locales con 1 solo clic y detección automática de puertos.
           </p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium active:scale-95 transition-all shadow-md"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium active:scale-95 transition-all shadow-sm"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Agregar Proyecto</span>
@@ -132,15 +132,15 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
 
       {/* Projects Grid */}
       {projects.length === 0 ? (
-        <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-12 text-center">
-          <FolderGit2 className="w-10 h-10 text-zinc-500 mx-auto mb-3" />
-          <h3 className="text-sm font-semibold text-zinc-200">No hay proyectos registrados</h3>
-          <p className="text-xs text-zinc-400 max-w-sm mx-auto mt-1 mb-4">
+        <div className="bg-theme-card border border-theme-border rounded-2xl p-12 text-center shadow-sm">
+          <FolderGit2 className="w-10 h-10 text-theme-muted mx-auto mb-3" />
+          <h3 className="text-sm font-semibold text-theme-text">No hay proyectos registrados</h3>
+          <p className="text-xs text-theme-muted max-w-sm mx-auto mt-1 mb-4">
             Guarda tus carpetas de proyectos (Node.js, Python, etc.) con sus comandos de arranque para levantarlos rápidamente.
           </p>
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-all"
+            className="px-4 py-2 rounded-xl bg-theme-button hover:bg-theme-button-hover text-theme-text border border-theme-border text-xs font-medium transition-all"
           >
             Registrar primer proyecto
           </button>
@@ -155,36 +155,36 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
             return (
               <div
                 key={proj.id}
-                className="bg-[#18181C]/80 border border-white/[0.08] hover:border-white/[0.15] rounded-2xl p-4 transition-all shadow-md backdrop-blur-xl flex flex-col justify-between"
+                className="bg-theme-card border border-theme-border hover:border-theme-border-subtle rounded-2xl p-4 transition-all shadow-sm flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold text-white text-sm truncate">{proj.name}</span>
+                    <span className="font-semibold text-theme-text text-sm truncate">{proj.name}</span>
                     <Badge status={runtime.status} />
                   </div>
 
-                  <div className="text-xs text-zinc-400 mb-2 truncate flex items-center gap-1.5">
-                    <Folder className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                  <div className="text-xs text-theme-secondary mb-2 truncate flex items-center gap-1.5">
+                    <Folder className="w-3.5 h-3.5 text-theme-muted shrink-0" />
                     <span className="truncate">{proj.folder}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs text-zinc-400 mb-4">
-                    <span className="font-mono bg-white/5 px-2 py-0.5 rounded text-[11px] text-zinc-300">
+                  <div className="flex items-center gap-2 text-xs text-theme-secondary mb-4">
+                    <span className="font-mono bg-theme-pill px-2 py-0.5 rounded text-[11px] text-theme-text border border-theme-border">
                       {proj.command}
                     </span>
                     {proj.expectedPort && (
-                      <span className="font-mono text-zinc-400">Puerto: {proj.expectedPort}</span>
+                      <span className="font-mono text-theme-muted">Puerto: {proj.expectedPort}</span>
                     )}
                   </div>
                 </div>
 
                 {/* Card Controls */}
-                <div className="flex items-center justify-between pt-3 border-t border-white/[0.06]">
+                <div className="flex items-center justify-between pt-3 border-t border-theme-border">
                   <div className="flex items-center gap-2">
                     {isRunning && runtime.activePort && (
                       <button
                         onClick={() => onOpenUrl(`http://localhost:${runtime.activePort}`)}
-                        className="flex items-center gap-1 text-xs text-blue-400 hover:underline"
+                        className="flex items-center gap-1 text-xs text-blue-500 dark:text-blue-400 hover:underline font-mono"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         <span>localhost:{runtime.activePort}</span>
@@ -193,7 +193,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     <button
                       onClick={() => onOpenFolder(proj.folder)}
                       title="Abrir carpeta en Explorer"
-                      className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5"
+                      className="p-1 rounded-lg text-theme-muted hover:text-theme-text hover:bg-theme-button"
                     >
                       <Folder className="w-3.5 h-3.5" />
                     </button>
@@ -203,7 +203,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     <button
                       onClick={() => handleDelete(proj.id)}
                       title="Eliminar proyecto guardado"
-                      className="p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-theme-muted hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -211,7 +211,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     {isRunning ? (
                       <button
                         onClick={() => handleStop(proj.id)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs font-medium active:scale-95 transition-all"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-xs font-medium active:scale-95 transition-all border border-rose-500/20"
                       >
                         <Square className="w-3 h-3" />
                         <span>Detener</span>
@@ -220,7 +220,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                       <button
                         onClick={() => handleStart(proj.id)}
                         disabled={isStarting}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-medium active:scale-95 transition-all"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium active:scale-95 transition-all border border-emerald-500/20"
                       >
                         <Play className="w-3 h-3" />
                         <span>{isStarting ? 'Iniciando...' : 'Iniciar'}</span>
@@ -236,80 +236,80 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
 
       {/* Add Project Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-md animate-fade-in">
           <form
             onSubmit={handleCreate}
-            className="w-full max-w-md bg-[#1C1C20] border border-white/10 rounded-2xl shadow-2xl p-6 text-zinc-100 space-y-4"
+            className="w-full max-w-md bg-theme-modal border border-theme-border rounded-2xl shadow-2xl p-6 text-theme-text space-y-4"
           >
-            <h3 className="text-base font-semibold text-white">Registrar Nuevo Proyecto</h3>
+            <h3 className="text-base font-semibold text-theme-text">Registrar Nuevo Proyecto</h3>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-zinc-400 mb-1">Nombre del Proyecto</label>
+                <label className="block text-theme-muted mb-1">Nombre del Proyecto</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="ej. Mi Web / Dashboard"
-                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-zinc-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-theme-input border border-theme-border rounded-xl text-theme-text focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-400 mb-1">Ruta en Disco (Carpeta)</label>
+                <label className="block text-theme-muted mb-1">Ruta en Disco (Carpeta)</label>
                 <input
                   type="text"
                   required
                   value={folder}
                   onChange={e => setFolder(e.target.value)}
                   placeholder="C:\Users\...\mi-proyecto"
-                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-zinc-200 focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono text-[11px]"
+                  className="w-full px-3 py-2 bg-theme-input border border-theme-border rounded-xl text-theme-text focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono text-[11px]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-zinc-400 mb-1">Comando de Inicio</label>
+                  <label className="block text-theme-muted mb-1">Comando de Inicio</label>
                   <input
                     type="text"
                     required
                     value={command}
                     onChange={e => setCommand(e.target.value)}
                     placeholder="npm run dev"
-                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-zinc-200 focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono text-[11px]"
+                    className="w-full px-3 py-2 bg-theme-input border border-theme-border rounded-xl text-theme-text focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono text-[11px]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Puerto Previsto (Opcional)</label>
+                  <label className="block text-theme-muted mb-1">Puerto Previsto (Opcional)</label>
                   <input
                     type="number"
                     value={expectedPort || ''}
                     onChange={e => setExpectedPort(e.target.value ? Number(e.target.value) : undefined)}
                     placeholder="ej. 3000 o 5173"
-                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-zinc-200 focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono text-[11px]"
+                    className="w-full px-3 py-2 bg-theme-input border border-theme-border rounded-xl text-theme-text focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono text-[11px]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-zinc-400 mb-1">Framework / Tipo</label>
+                <label className="block text-theme-muted mb-1">Framework / Tipo</label>
                 <input
                   type="text"
                   value={framework}
                   onChange={e => setFramework(e.target.value)}
                   placeholder="Vite, Next.js, FastAPI, Flask..."
-                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-zinc-200 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-theme-input border border-theme-border rounded-xl text-theme-text focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-theme-border">
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="px-4 py-2 text-xs font-medium text-zinc-400 hover:text-white bg-white/5 rounded-xl transition-colors"
+                className="px-4 py-2 text-xs font-medium text-theme-secondary hover:text-theme-text bg-theme-button hover:bg-theme-button-hover rounded-xl transition-colors border border-theme-border"
               >
                 Cancelar
               </button>

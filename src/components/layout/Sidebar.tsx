@@ -41,10 +41,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-52 h-full bg-[#131317] border-r border-white/[0.08] flex flex-col justify-between p-3 select-none">
+    <aside className="w-52 h-full bg-theme-sidebar border-r border-theme-border flex flex-col justify-between p-3 select-none transition-colors duration-200">
       {/* Navigation list */}
       <div className="space-y-1">
-        <div className="px-3 py-2 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
+        <div className="px-3 py-2 text-[10px] font-semibold text-theme-muted uppercase tracking-wider">
           Local Development
         </div>
 
@@ -57,18 +57,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => onSelectTab(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                 isActive
-                  ? 'bg-white/10 text-white shadow-sm border border-white/10'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                  ? 'bg-theme-active-item text-theme-text shadow-sm border border-theme-border font-semibold'
+                  : 'text-theme-secondary hover:text-theme-text hover:bg-theme-button'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Icon className={`w-4 h-4 ${isActive ? 'text-blue-400' : 'text-zinc-400'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-blue-500 dark:text-blue-400' : 'text-theme-muted'}`} />
                 <span>{item.label}</span>
               </div>
               {item.count !== undefined && item.count > 0 && (
                 <span
                   className={`px-1.5 py-0.5 rounded-md text-[10px] font-mono font-semibold ${
-                    isActive ? 'bg-blue-500/20 text-blue-300' : 'bg-white/5 text-zinc-400'
+                    isActive ? 'bg-blue-500/20 text-blue-600 dark:text-blue-300' : 'bg-theme-pill text-theme-secondary'
                   }`}
                 >
                   {item.count}
@@ -80,18 +80,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer / Theme toggle */}
-      <div className="pt-3 border-t border-white/[0.06]">
-        <div className="flex items-center justify-between px-2 text-xs text-zinc-400">
-          <span className="text-[11px]">Tema</span>
+      <div className="pt-3 border-t border-theme-border">
+        <div className="flex items-center justify-between px-2 text-xs text-theme-secondary">
+          <span className="text-[11px] font-medium">Tema</span>
           <button
             onClick={onToggleTheme}
-            title={`Tema actual: ${theme}`}
-            className="flex items-center gap-1.5 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white transition-all text-xs"
+            title={`Cambiar tema (actual: ${theme})`}
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-theme-button hover:bg-theme-button-hover text-theme-text border border-theme-border transition-all text-xs font-medium shadow-sm active:scale-95"
           >
-            {theme === 'dark' && <Moon className="w-3.5 h-3.5 text-blue-400" />}
-            {theme === 'light' && <Sun className="w-3.5 h-3.5 text-amber-400" />}
-            {theme === 'system' && <Monitor className="w-3.5 h-3.5 text-zinc-400" />}
-            <span className="capitalize text-[10px]">{theme}</span>
+            {theme === 'dark' && <Moon className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />}
+            {theme === 'light' && <Sun className="w-3.5 h-3.5 text-amber-500" />}
+            {theme === 'system' && <Monitor className="w-3.5 h-3.5 text-theme-muted" />}
+            <span className="capitalize text-[11px]">
+              {theme === 'dark' ? 'Oscuro' : theme === 'light' ? 'Claro' : 'Auto'}
+            </span>
           </button>
         </div>
       </div>

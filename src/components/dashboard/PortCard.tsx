@@ -34,12 +34,12 @@ export const PortCard: React.FC<PortCardProps> = ({
   return (
     <div
       onClick={() => onSelect(item)}
-      className="group relative bg-[#18181F] hover:bg-[#202028] border border-white/[0.08] hover:border-white/[0.18] rounded-2xl p-4 transition-all duration-200 cursor-pointer shadow-md hover:shadow-2xl"
+      className="group relative bg-theme-card hover:bg-theme-card-hover border border-theme-border rounded-2xl p-4 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
     >
       {/* Top row: Port Hero, Status, Favorite */}
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center gap-2.5">
-          <span className="font-mono text-xl font-bold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+          <span className="font-mono text-xl font-bold tracking-tight text-theme-text group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
             {item.port}
           </span>
           <Badge status={item.state} />
@@ -54,45 +54,45 @@ export const PortCard: React.FC<PortCardProps> = ({
           title={item.isFavorite ? 'Quitar de favoritos' : 'Marcar como favorito'}
           className={`p-1 rounded-lg transition-colors ${
             item.isFavorite
-              ? 'text-amber-400 hover:text-amber-300'
-              : 'text-zinc-500 hover:text-zinc-300 opacity-0 group-hover:opacity-100'
+              ? 'text-amber-500 dark:text-amber-400 hover:text-amber-400'
+              : 'text-theme-muted hover:text-theme-text opacity-0 group-hover:opacity-100'
           }`}
         >
-          <Star className={`w-4 h-4 ${item.isFavorite ? 'fill-amber-400' : ''}`} />
+          <Star className={`w-4 h-4 ${item.isFavorite ? 'fill-amber-400 text-amber-400' : ''}`} />
         </button>
       </div>
 
       {/* Middle row: Project name & framework */}
       <div className="mb-3">
-        <h3 className="text-sm font-semibold text-zinc-100 truncate flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-theme-text truncate flex items-center gap-2">
           <span>{item.projectName || 'Proyecto desconocido'}</span>
         </h3>
-        <div className="flex items-center gap-2 mt-0.5 text-xs text-zinc-400">
-          <span className="text-zinc-300 font-medium">{item.framework || 'Node.js / Local'}</span>
+        <div className="flex items-center gap-2 mt-0.5 text-xs text-theme-secondary">
+          <span className="text-theme-text font-medium">{item.framework || 'Node.js / Local'}</span>
           <span>·</span>
-          <span className="font-mono text-[11px] text-zinc-400">{item.processName}</span>
+          <span className="font-mono text-[11px] text-theme-secondary">{item.processName}</span>
           <span>·</span>
-          <span className="font-mono text-[11px] text-zinc-500">PID: {item.pid}</span>
+          <span className="font-mono text-[11px] text-theme-muted">PID: {item.pid}</span>
         </div>
       </div>
 
       {/* Directory or URL preview */}
-      <div className="mb-4 text-xs text-zinc-400">
+      <div className="mb-4 text-xs text-theme-secondary">
         {item.workingDirectory ? (
-          <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 truncate bg-white/[0.03] px-2 py-1 rounded-lg border border-white/[0.04]">
-            <Folder className="w-3 h-3 text-zinc-500 shrink-0" />
+          <div className="flex items-center gap-1.5 text-[11px] text-theme-secondary truncate bg-theme-pill px-2 py-1 rounded-lg border border-theme-border">
+            <Folder className="w-3 h-3 text-theme-muted shrink-0" />
             <span className="truncate">{item.workingDirectory}</span>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 truncate bg-white/[0.03] px-2 py-1 rounded-lg border border-white/[0.04]">
+          <div className="flex items-center gap-1.5 text-[11px] text-theme-secondary truncate bg-theme-pill px-2 py-1 rounded-lg border border-theme-border">
             <span className="font-mono truncate">{item.url}</span>
           </div>
         )}
       </div>
 
       {/* Footer: Duration & Real Action Buttons */}
-      <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]" onClick={e => e.stopPropagation()}>
-        <div className="text-[11px] text-zinc-500">
+      <div className="flex items-center justify-between pt-2 border-t border-theme-border" onClick={e => e.stopPropagation()}>
+        <div className="text-[11px] text-theme-muted">
           {item.uptimeFormatted ? `Activo: ${item.uptimeFormatted}` : (item.startTime ? `Inicio: ${item.startTime}` : '')}
         </div>
 
@@ -101,7 +101,7 @@ export const PortCard: React.FC<PortCardProps> = ({
           <button
             onClick={() => onOpenUrl(item.url)}
             title="Abrir en navegador"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
+            className="p-1.5 rounded-lg bg-theme-button hover:bg-theme-button-hover text-theme-secondary hover:text-theme-text border border-theme-border transition-colors active:scale-95"
           >
             <ExternalLink className="w-3.5 h-3.5" />
           </button>
@@ -110,7 +110,7 @@ export const PortCard: React.FC<PortCardProps> = ({
           <button
             onClick={() => onCopyUrl(item.url)}
             title="Copiar URL"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 active:scale-95 transition-all"
+            className="p-1.5 rounded-lg bg-theme-button hover:bg-theme-button-hover text-theme-secondary hover:text-theme-text border border-theme-border transition-colors active:scale-95"
           >
             <Copy className="w-3.5 h-3.5" />
           </button>
@@ -122,8 +122,8 @@ export const PortCard: React.FC<PortCardProps> = ({
               title={isPaused ? 'Reanudar proceso' : 'Pausar proceso'}
               className={`p-1.5 rounded-lg active:scale-95 transition-all ${
                 isPaused
-                  ? 'text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'
-                  : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  ? 'text-amber-500 bg-amber-500/10 hover:bg-amber-500/20'
+                  : 'bg-theme-button hover:bg-theme-button-hover text-theme-secondary hover:text-theme-text border border-theme-border'
               }`}
             >
               {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
@@ -135,7 +135,7 @@ export const PortCard: React.FC<PortCardProps> = ({
             <button
               onClick={() => onRequestStop(item)}
               title="Detener servidor"
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 active:scale-95 transition-all"
+              className="p-1.5 rounded-lg bg-theme-button hover:bg-rose-500/10 text-theme-secondary hover:text-rose-500 border border-theme-border transition-all active:scale-95"
             >
               <Square className="w-3.5 h-3.5" />
             </button>
